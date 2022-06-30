@@ -1,9 +1,7 @@
 let s:path = expand("<sfile>:p:h")
+let s:server_job = v:none
 
 function! <SID>translate(word)
-
-let saved_pos = getcurpos()
-
 if has('python3')
 py3 << EOF
 import vim
@@ -11,6 +9,8 @@ import os
 import sys
 import requests
 import json
+import socket
+from asyncio import sleep
 
 sys.path.append(vim.eval("s:path"))
 
@@ -19,7 +19,8 @@ js_code = """window.scrollTo(0, 0); document.getElementsByTagName('html')[0].sty
 url = "http://localhost:4000/jsonrpc"
 
 module_path = vim.eval("s:path") + "/pop_url_window.py"
-
+server_path = vim.eval("s:path") + "/webWindow.py"
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 word = vim.eval("a:word")
 
 pos = vim.eval("getwinpos()")
@@ -36,7 +37,8 @@ payload = {
   "id": 0,
 }
 
-requests.post(url, json=payload).json()
+try:
+    requests.post(url, json=payload)
 
 EOF
 endif
@@ -75,10 +77,39 @@ endif
 endfunction
 
 function! web#bing()
-	let word = expand("<cword>")
+    if !web#server_started()
+        call web#start_server()
+        return
+    endif
+    let word = expand("<cword>")
     call <SID>translate(word)
 endfunction
 
 function! web#bingClose()
+    if !web#server_started()
+        return
+    endif
     call <SID>hideWindow()
 endfunction
+
+function! web#start_server()
+    if web#server_started()
+        return
+    endif
+    let s:server_path = s:path . "/webWindow.py"
+    let s:server_job = job_start("python3 " . s:server_path)
+endfunction
+
+function! web#stop_server()
+    if web#server_started()
+        call job_stop(s:server_job)
+    endif
+endfunction
+
+function! web#server_started() abort
+  return s:server_job != v:none && job_status(s:server_job) == "run"
+endfunction
+
+autocmd VimEnter * call web#start_server()
+command! -nargs=0 WebStart  :call web#start_server()
+command! -nargs=0 WebStop   :call web#stop_server()
