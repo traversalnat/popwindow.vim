@@ -39,6 +39,8 @@ payload = {
 
 try:
     requests.post(url, json=payload)
+except:
+    pass
 
 EOF
 endif
