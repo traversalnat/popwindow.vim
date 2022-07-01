@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from PyQt6.QtWebEngineCore import QWebEnginePage
 from PyQt6 import QtCore
 from PyQt6.QtCore import QUrl, Qt, QEventLoop
@@ -237,8 +239,7 @@ if __name__ == "__main__":
             "--ignore-gpu-blocklist",
             "--enable-gpu-rasterization",
             "--enable-native-gpu-memory-buffers"]
-    app = QApplication(
-        sys.argv + ["--disable-web-security"] + hardware_acceleration_args)
+    app = QApplication(["--disable-web-security"] + hardware_acceleration_args)
     screen = app.primaryScreen()
     screen_size = screen.size()
 
