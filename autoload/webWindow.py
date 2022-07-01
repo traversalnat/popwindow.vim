@@ -239,6 +239,11 @@ if __name__ == "__main__":
             "--ignore-gpu-blocklist",
             "--enable-gpu-rasterization",
             "--enable-native-gpu-memory-buffers"]
+    if platform.system() == "Darwin":
+        import AppKit
+        info = AppKit.NSBundle.mainBundle().infoDictionary()
+        info["LSBackgroundOnly"] ="1"
+
     app = QApplication(["--disable-web-security"] + hardware_acceleration_args)
     screen = app.primaryScreen()
     screen_size = screen.size()
