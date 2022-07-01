@@ -23,14 +23,29 @@ endfunction
 function! web#server_started()
 if has('python3')
 py3 << EOF
-import socket
-sock = socket.socket()
-binded = 0
+import vim
+import os
+import sys
+import requests
+import json
+
+url = "http://localhost:4000/jsonrpc"
+
+payload = {
+  "method": "add",
+  "params": [
+      1, 2
+      ],
+  "jsonrpc": "2.0",
+  "id": 0,
+}
+
+binded = 1
 try:
-    sock.bind(("0.0.0.0", 4000))
+    requests.post(url, json=payload)
 except:
-    binded = 1 
-sock.close()
+    binded = 0
+
 vim.command("let l:binded = " + str(binded))
 EOF
 return l:binded

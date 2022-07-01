@@ -14,7 +14,6 @@ js_code = """window.scrollTo(0, 0); document.getElementsByTagName('html')[0].sty
 url = "http://localhost:4000/jsonrpc"
 
 module_path = vim.eval("s:path") + "/pop_url_window.py"
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 word = vim.eval("a:word")
 
 pos = vim.eval("getwinpos()")
