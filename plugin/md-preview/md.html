@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>html内嵌markdown</title>
+    <script src="INDEX_DIR/showdown.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="INDEX_DIR/github-markdown.css">
+</head>
+
+<style>
+#view-area {
+    width: 100%;
+}
+
+/*Github主题要求的样式引入*/
+.markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+}
+
+@media (max-width: 767px) {
+    .markdown-body {
+        padding: 15px;
+    }
+}
+</style>
+
+<script>
+    function mdConverter() {
+        var md = "MARKDOWN"
+        var converter = new showdown.Converter();
+        converter.setOption('tables', true);
+        var view = converter.makeHtml(md);
+        document.getElementById("view-area").innerHTML = view;
+    }
+</script>
+
+<body onload="mdConverter()">
+<div id="view-area"/>
+</body>
+</html>
