@@ -17,7 +17,30 @@ endif
 endfunction
 
 function! web#stop_server()
-    " TODO 停止 webWindow 进程, 能不能得到另一个函数中的变量?
+if has('python3')
+py3 << EOF
+import vim
+import os
+import sys
+import requests
+import json
+
+url = "http://localhost:4000/jsonrpc"
+
+payload = {
+  "method": "exit",
+  "params": [],
+  "jsonrpc": "2.0",
+  "id": 0,
+}
+
+try:
+    requests.post(url, json=payload)
+except:
+    pass
+
+EOF
+endif
 endfunction
 
 function! web#server_started()

@@ -227,6 +227,7 @@ class POPWEB(object):
 def application(request):
     # Dispatcher is dictionary {<method_name>: callable}
     dispatcher["add"] = lambda a, b: a + b
+    dispatcher["exit"] = lambda : sys.exit(0)
     response = JSONRPCResponseManager.handle(
         request.data, dispatcher)
     return Response(response.json, mimetype='application/json')
