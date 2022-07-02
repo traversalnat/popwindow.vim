@@ -40,6 +40,7 @@ endif
 
 " any key input will hide the window
 let in = getchar()
+call feedkeys(nr2char(in))
 
 call <SID>hideWindow()
 
