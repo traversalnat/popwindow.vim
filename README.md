@@ -5,5 +5,5 @@ a vim version popweb (https://github.com/manateelazycat/popweb.git)
 2. Install werkzeug and json-rpc`pip install werkzeug json-rpc`
 
 In .vimrc
-`autocmd VimEnter * call web#start_server()
-nmap <leader>b : call youdao#web() <CR>`
+`autocmd VimEnter * call web#start_server()`
+`nmap <leader>b : call youdao#web() <CR>`
